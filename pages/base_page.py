@@ -1,5 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
+from datetime import datetime
 
 
 # Class to define common actions for ease of use when scripting tests
@@ -20,3 +22,10 @@ class BasePage:
     def get_title(self):
         return self.driver.title
 
+    def take_screenshot(self, name):
+        screenshots_dir = os.path.join(os.path.dirname(__file__), '../screenshots')
+        os.makedirs(screenshots_dir, exist_ok=True)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        screenshot_path = os.path.join(screenshots_dir, f"{name}_{timestamp}.png")
+        self.driver.save_screenshot(screenshot_path)
+        print(f"Screenshot saved to: {screenshot_path}")
